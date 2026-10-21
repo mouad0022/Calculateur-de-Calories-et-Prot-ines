@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Calories et Protéines</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow p-4">
+                    <h2 class="text-center mb-4 text-primary">Calculateur Fitness</h2>
+                    
+                    <form id="calcForm">
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Genre</label>
+                            <select class="form-select" id="gender" required>
+                                <option value="male">Homme</option>
+                                <option value="female">Femme</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Âge (ans)</label>
+                            <input type="number" class="form-control" id="age" placeholder="Ex: 22" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="height" class="form-label">Taille (cm)</label>
+                            <input type="number" class="form-control" id="height" placeholder="Ex: 175" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="weight" class="form-label">Poids (kg)</label>
+                            <input type="number" class="form-control" id="weight" placeholder="Ex: 70" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="activity" class="form-label">Niveau d'activité physique</label>
+                            <select class="form-select" id="activity" required>
+                                <option value="1.2">Sédentaire (Bureau, peu ou pas d'exercice)</option>
+                                <option value="1.375">Légèrement actif (Sport 1-3 fois/semaine)</option>
+                                <option value="1.55" selected>Modérément actif (Sport 3-5 fois/semaine)</option>
+                                <option value="1.725">Très actif (Sport intense 6-7 fois/semaine)</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Calculer mes besoins exacts</button>
+                    </form>
+
+                    <div id="resultArea" class="mt-4 d-none">
+                        <div class="alert alert-success text-center">
+                            <h4>Résultats personnalisés :</h4>
+                            <p class="mb-1"> Calories journalières : <strong id="caloriesResult">0</strong> kcal</p>
+                            <p class="mb-0"> Protéines recommandées : <strong id="proteinResult">0</strong> g</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('calcForm');
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const gender = document.getElementById('gender').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            
+            if (gender === 'male') {
+                bmr += 5;
+            } else {
+                bmr -= 161;
+            }
+
+            const calories = Math.round(bmr * activity);
+            const proteins = Math.round(weight * 1.8);
+
+            document.getElementById('caloriesResult').textContent = calories;
+            document.getElementById('proteinResult').textContent = proteins;
+
+            document.getElementById('resultArea').classList.remove('d-none');
+        });
+    </script>
+
+</body>
+</html>
